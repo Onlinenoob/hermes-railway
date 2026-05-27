@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-HERMES_HOME="/root/.hermes"
+HERMES_HOME="/home/hermes/.hermes"
 mkdir -p "$HERMES_HOME"
 
 ENV_FILE="$HERMES_HOME/.env"
@@ -49,21 +49,4 @@ gateway:
 YAML
 fi
 
-SOUL_SRC="/app/hermes/SOUL.md"
-SOUL_DEST="$HERMES_HOME/SOUL.md"
-if [ -f "$SOUL_SRC" ] && [ ! -f "$SOUL_DEST" ]; then
-  cp "$SOUL_SRC" "$SOUL_DEST"
-fi
-
-# Find hermes binary wherever it may be
-HERMES_BIN=$(find / -name "hermes" -type f 2>/dev/null | head -1)
-
-if [ -z "$HERMES_BIN" ]; then
-  echo "ERROR: hermes binary not found in container"
-  find / -name "hermes*" 2>/dev/null
-  exit 1
-fi
-
-echo "Found hermes at: $HERMES_BIN"
-echo "Hermes config ready. Starting gateway..."
-exec "$HERMES_BIN" gateway run --replace
+echo "Hermes config ready."
