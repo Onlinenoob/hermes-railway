@@ -5,6 +5,8 @@ HERMES_HOME="/home/hermes/.hermes"
 mkdir -p "$HERMES_HOME"
 
 ENV_FILE="$HERMES_HOME/.env"
+touch "$ENV_FILE"
+chmod 600 "$ENV_FILE"
 
 write_if_set() {
   local key="$1"
@@ -16,12 +18,8 @@ write_if_set() {
   fi
 }
 
-touch "$ENV_FILE"
-chmod 600 "$ENV_FILE"
-
 write_if_set ANTHROPIC_API_KEY
 write_if_set OPENROUTER_API_KEY
-write_if_set NOUS_API_KEY
 write_if_set TELEGRAM_BOT_TOKEN
 write_if_set TELEGRAM_ALLOWED_USERS
 write_if_set TELEGRAM_HOME_CHANNEL
@@ -49,4 +47,5 @@ gateway:
 YAML
 fi
 
-echo "Hermes config ready."
+echo "Env vars written. Handing off to official entrypoint..."
+exec /opt/hermes/docker/entrypoint.sh gateway run --replace
